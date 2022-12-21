@@ -1,0 +1,82 @@
+1 啷  l a N
+1 喃  l E
+1 噻  s E
+1 映  y i n
+1 矬  c o
+1 巴  b a
+2 把  b a
+1 笨  b & n
+1 不  b u
+2 差  c a
+1 常  c a N
+1 出  c u
+1 次  c I
+1 从  c o N
+1 得  d E
+1 的  l E
+1 定  d i n
+1 动  d o N
+1 都  d o w
+1 对  d w e y
+1 儿   R
+1 刚  g a N
+1 个  g o
+1 工  g o N
+2 好  h a w
+1 很  h & n
+1 还  h @ y
+1 活  h o
+1 集  j i
+2 家  j y @
+1 就  j y o w
+1 肯  k & n
+1 抠  k o w
+1 来  l @ y
+1 篮  l E
+1 丽  l i
+1 连  l y E n
+1 了  l o
+1 隆  l o N
+1 嘛  m a
+1 买  m @ y
+1 卖  m @ y
+1 没  m e y
+1 明  m i n
+1 拿  l a
+1 你  n i
+1 捏  n y E
+2 哦   o
+2 撇  p y E
+1 平  p i n
+2 铺  p u
+1 去  q U
+1 热  z E
+1 啥  s a
+1 上  s a N
+1 生  s & n
+1 狮  s I
+1 时  s I
+1 是  s I
+1 手  s o w
+1 双  s w a N
+1 体  t i
+1 袜  w a
+2 相  x y a N
+1 小  x y a w
+1 心  x i n
+1 椅   i
+1 艺   i
+1 因  y i n
+1 银  y i n
+1 英  y i n
+1 影  y i n
+1 有  y o w
+1 雨   U
+1 咋  z a
+1 这  z E
+2 只  z I
+1 重  z o N
+1 子  z I
+1 嘴  z w e y
+1 做  z o
+1 恁  n & n
