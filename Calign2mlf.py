@@ -6,7 +6,7 @@
           -r sampling_rate -- override which sampling rate model to use, either 8000 or 16000
           -a user_supplied_dictionary -- encoded in utf8, the dictionary will be combined with the dictionary in the model
           -d user_supplied_dictionary -- encoded in utf8, the dictionary will be used alone, NOT combined with the dictionary in the model
-          -p punctuations -- encoded in utf8, punctuations and other symbols in this file will be deleted in forced alignment, the default is to use "puncs" in the model 
+          -p punctuations -- encoded in utf8, punctuations and other symbols in this file will be deleted in forced alignment, the default is to use "puncs" in the model
 """
 
 import os
@@ -16,7 +16,7 @@ import wave
 import codecs
 import io
 
-HOMEDIR = '/Users/xuchenzi/Documents/phonetics/P2FA_Mandarin/run'
+HOMEDIR = '/Users/kechun/Documents/GitHub/P2FA_changsha/run'
 MODEL_DIR = HOMEDIR + '/model'
 
 missing = io.open('MissingWords', 'w', encoding='utf8')
@@ -66,11 +66,11 @@ def prep_mlf(trsfile, tmpbase):
 
 
 def gen_res(infile1, infile2, outfile):
-    
+
     f = codecs.open(infile1, 'r', 'utf-8')
     lines = f.readlines()
     f.close()
-    
+
     f = codecs.open(infile2, 'r', 'utf-8')
     lines2 = f.readlines()
     f.close()
@@ -114,7 +114,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     tmpbase = '/tmp/' + os.environ['USER'] + '_' + str(os.getpid())
-    
+
     #find sampling rate and prepare wavefile
     if sr_override:
         SR = int(sr_override)
@@ -127,8 +127,8 @@ if __name__ == '__main__':
             os.system('sox ' + wavfile + ' -r 16000 ' + tmpbase + '.wav')
             SR = 16000
         else:
-            os.system('cp -f ' + wavfile + ' ' + tmpbase + '.wav') 
- 
+            os.system('cp -f ' + wavfile + ' ' + tmpbase + '.wav')
+
     #prepare plpfile
     os.system('HCopy -C ' + MODEL_DIR + '/' + str(SR) + '/config ' + tmpbase + '.wav ' + tmpbase + '.plp')
 
@@ -154,14 +154,14 @@ if __name__ == '__main__':
     if puncs:
         os.system('cp -f ' + puncs + ' ' + tmpbase + '.puncs')
     else:
-        os.system('cp -f ' + MODEL_DIR + '/puncs ' + tmpbase + '.puncs') 
+        os.system('cp -f ' + MODEL_DIR + '/puncs ' + tmpbase + '.puncs')
 
     unks = prep_mlf(trsfile, tmpbase)
     for unk in unks:
         missing.write('Missing: ' + unk + '\n')
-    
+
     #run alignment
-    os.system('HVite -T 1 -a -m -t 10000.0 10000.0 100000.0 -I ' + tmpbase + '.mlf -H ' + MODEL_DIR + '/' + str(SR) + '/macros -H ' + MODEL_DIR + '/' + str(SR) + '/hmmdefs -i ' + tmpbase + '.aligned' + ' ' + tmpbase + '.dict ' + MODEL_DIR + '/monophones ' + tmpbase + '.plp' + ' > ' + tmpbase + '.results') 
+    os.system('HVite -T 1 -a -m -t 10000.0 10000.0 100000.0 -I ' + tmpbase + '.mlf -H ' + MODEL_DIR + '/' + str(SR) + '/macros -H ' + MODEL_DIR + '/' + str(SR) + '/hmmdefs -i ' + tmpbase + '.aligned' + ' ' + tmpbase + '.dict ' + MODEL_DIR + '/monophones ' + tmpbase + '.plp' + ' > ' + tmpbase + '.results')
 
     gen_res(tmpbase + '.aligned', tmpbase + '.mlf', outfile)
 

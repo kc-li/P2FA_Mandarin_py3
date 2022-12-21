@@ -1,0 +1,6 @@
+S10diaN1D2.wav "小 映 卖 哒 一 杂 柚 子 啊"
+S20diaN1A1.wav "小 英 开 哒 杂 椰 子"
+S20diaN1A2.wav "小 英 开 哒 杂 椰 子 嘞"
+S20diaNA5.wav "小 英 开 哒 杂 椰 子 嘞"
+S20diaND2.wav "小 映 卖 哒 杂 柚 子"
+S20diaND5.wav "小 映 卖 杂 柚 子 嘞"

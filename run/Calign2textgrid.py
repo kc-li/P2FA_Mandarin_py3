@@ -18,7 +18,7 @@ import wave
 import codecs
 import io
 
-HOMEDIR = '/Users/xuchenzi/Documents/phonetics/P2FA_Mandarin/run'
+HOMEDIR = '/Users/kechun/GitHub/P2FA_changsha/run'
 MODEL_DIR = HOMEDIR + '/model'
 
 missing = io.open('MissingWords', 'w', encoding='utf8')

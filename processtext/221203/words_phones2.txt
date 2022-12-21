@@ -1,0 +1,114 @@
+1 伽 g a
+1 喫 q y @
+1 柚 y o
+1 椰 y E
+1 莹 y i N
+1 映 y i N
+5 啊   a
+1 爱   @ y
+2 吧  b a
+1 不  b u
+1 出  c u
+1 次  c I
+1 从  c o N
+1 哒  l a
+1 大  d a
+2 得  d &
+1 的  d &
+1 堤  d i
+1 滴  d i
+1 点  d y E n
+1 店  d y E n
+1 定  d i N
+1 动  d o N
+1 都  d o w
+1 对  d w e y
+1 嗦 s >
+1 多  d w >
+1 朵  d w >
+1 泛  f @ n
+1 该  g @ y
+1 刚  g a N
+1 搞  g a w
+1 个  g &
+1 各  g &
+1 瓜  g w a
+1 柜  g w e y
+1 果  g w >
+1 哈  h a
+2 好  h a w
+1 还  h @ y
+1 活  h w >
+1 伙  h w >
+1 集  j i
+2 家  j y @
+1 捡  j y E n
+1 咯  l o
+1 开  k @ y
+1 克  k &
+1 肯  k & n
+1 抠  k o w
+1 口  k o w
+2 拉  l a
+2 啦  l a
+1 来  l @ y
+1 篮  l @ n
+1 烂  l @ n
+1 李  l i
+1 里  l i
+1 丽  l i
+1 连  l y E n
+1 两  l y a N
+1 灵  l i N
+1 篓  l o w
+1 陆  l o w
+1 买  m @
+1 卖  m @
+1 蛮  m @ n
+1 么  m &
+1 没  m &
+1 梦  m & N
+1 明  m i N
+1 木  m u
+2 那  n a
+1 闹  n a w
+1 内  n e y
+1 你  n i
+2 哦   o
+2 铺  p u
+1 去  q U
+1 热  W E
+1 生  s & N
+1 什  s I
+1 是  s I
+1 瘦  s o w
+1 她  t a
+1 提  d i a
+1 体  t i
+1 胃  w e y
+1 惜  x i
+1 细  x i
+1 下  x y @
+1 小  x y a w
+1 心  x i n
+1 鸭  @
+1 丫  y @
+1 要  y a w
+1 也  y E
+1 一   i
+1 意   i
+1 英  y i N
+1 影  y i N
+1 有  y o w
+1 雨   U
+1 岳   y o
+1 杂  z a
+1 在  z @ y
+1 柱  j U
+1 注  j U
+1 子  z I
+1 字  z I
+1 最  z w e y
+4 诶   e y
+1 啵  b w o
+1 嘞  l @
