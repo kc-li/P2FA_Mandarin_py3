@@ -1,0 +1,144 @@
+---
+title: "Chengdu_p2fa_basic"
+author: "Katrina Li"
+date: '2022-09-04'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+```{r}
+chengdupath <- "/Users/kechun/GitHub/P2FA_Mandarin_py3/praat_followup/data_chengdu_p2fa"
+chengdufiles <- list.files(chengdupath,".*dia.*",full.names = T)
+# note: speficy na.strings to make sure all columns are read as numbers
+# extract patterns: 
+# - [a]? For Cantonese it can be 
+chengdu <-tibble(File = chengdufiles) %>%
+  tidyr::extract(File, c("paridsentence"),"(S[0-9]*dia[N]?[1]?[A-I]+[0-9][a]?)",remove = FALSE) %>%
+  mutate(Data = lapply(File, read.delim, sep = "\t",na.strings = "--undefined--")) %>%
+  unnest(Data) %>%
+  select(-File) %>%
+  mutate(parid = str_extract(paridsentence,"S[0-9]*"),
+         sen_lab = str_extract(paridsentence,"[A-I]+[0-9][a]?")
+         )
+
+chengdu.clean <- chengdu %>%
+  mutate(
+    group = substr(sen_lab,1,nchar(sen_lab)-1),
+    group = if_else(endsWith(group,"2"), substr(group,1,nchar(group)-1),group),
+    group = as.factor(group),
+    group_number = str_sub(sen_lab,-1),
+    # group number has a suffix 'a', the group number is marked as '2a'
+    group_number = if_else(group_number=="a", "2a",group_number),
+    group_number = as.factor(group_number),
+    case = case_when(character_lab == "小"~"Name(prefix)",
+                     character_lab == "英"~"Name",
+                     character_lab == "银"~"Name",
+                     character_lab == "影"~"Name",
+                     character_lab == "映"~"Name",
+                     character_lab == "捏"~"Verb",
+                     character_lab == "拿"~"Verb",
+                     character_lab == "买"~"Verb",
+                     character_lab == "卖"~"Verb",
+                     character_lab == "狮"~"Object",
+                     character_lab == "篮"~"Object",
+                     character_lab == "椅"~"Object",
+                     character_lab == "袜"~"Object",
+                     character_lab == "子"~"Object(suffix)"),
+    case = factor(case,levels = c("Name(prefix)", "Name","Verb","Object","Object(suffix)","Particle")),
+    case_num = as.numeric(case),
+    tone_type = case_when( group == "A" ~ "T1",
+                           group == "B" ~ 'T2',
+                           group == "C" ~ 'T3',
+                           group == "D" ~ 'T4'),
+    tone_type = as.factor(tone_type),
+    interval = as.numeric(interval),
+    f0mean = as.numeric(f0mean),
+    f0min = as.numeric(f0min),
+    f0max = as.numeric(f0max),
+    f0min_point = as.numeric(f0min_point),
+    f0max_point = as.numeric(f0max_point)
+  ) 
+
+chengdu.filter <- chengdu.clean %>%
+  filter(group_number != 3 | interval < 10) %>% # exclude the phrase 'bushi...'
+  filter(group_number != 3 | interval > 1) %>% # exclude 'shi'
+  filter(paridsentence == "S2diaC4"| sen_lab == "B4" | group_number != 4 | interval > 7) %>% # exclude the context before 'lian'
+  filter(paridsentence == "S2diaC4"| sen_lab == "B4" | group_number != 4 | interval < 18) %>% # exclude the context after 'lian' sentence
+  filter(sen_lab != "B4" | interval > 14) %>% # exclude the context before 'lian' for B4
+  filter(!is.na(case)) %>%
+  filter(paridsentence != "S2diaC4" | interval != 13) # just one extra point
+
+# Briefly check the number
+chengdu.filter %>%
+  group_by(parid, group, group_number) %>%
+  summarise(count = n()) %>%
+  filter(count != 15)
+
+# not right point numbers (wrong way of filter):
+#S2A3, A4, C4
+#S28A4
+#S4D4
+
+chengdu.f0 <- chengdu.filter %>%
+  pivot_longer(cols = starts_with("f0_"), names_to = "syltime", names_prefix = "f0_", values_to = "f0") %>%
+  group_by(paridsentence,group, group_number) %>%
+  mutate(sentime = row_number(),
+         f0 = as.numeric(f0), #na value produced becaused of undefined value in makring
+         f0_semi = f2st(f0,base=50),
+         syltime = as.numeric(syltime)
+         )
+
+# Check when there is no f0 data
+chengdu.f0 %>%
+  filter(is.na(f0)) %>%
+  select(parid, rhyme_lab, character_lab, sen_lab,syltime )
+range(chengdu.f0$sentime)
+```
+
+## Plot figure
+```{r}
+plot_fun <- function(x,title){
+  gg_colours <- c("#999999", "#E69F00", "#56B4E9","#009E73", "#F0E442", "#0072B2")
+ggplot(x, aes(syltime, meanf0, group = group_number,color = group_number)) +
+  geom_line(size = 1) +
+  scale_color_manual(name = "Focus condition",
+                       breaks = c("1","2","2a","3","4","5"),
+                       labels = c("Broad focus","Wh-focus","Wh-focus-repeat","Subject focus","Even focus","Object focus"),
+                       values = gg_colours) +
+  labs(x="Normalized Time point", y = "Mean f0 in semitone") +
+  ggtitle(title) +
+  theme(axis.title = element_text(size = 10), 
+        legend.title = element_text (size =10), 
+        legend.text = element_text(size = 8),
+        legend.position = "bottom",
+        plot.title = element_text(size=10))+
+    ylim(12,31) +
+  facet_grid(group~case)
+}
+
+chengdu.f0.ave <- chengdu.f0 %>%
+  group_by(sen_lab,group, group_number, case, case_num, syltime,sentime) %>%
+  summarise(
+    count = n(),
+    meanf0 = mean(f0_semi, na.rm = TRUE),
+    sdf0 = sd(f0_semi, na.rm = TRUE)
+  )
+
+
+plot_fun(subset(chengdu.f0.ave,group=="A"),"Chengdu Tone 1")
+plot_fun(subset(chengdu.f0.ave,group=="B"),"Chengdu Tone 2")
+plot_fun(subset(chengdu.f0.ave,group=="C"),"Chengdu Tone 3")
+plot_fun(subset(chengdu.f0.ave,group=="D"),"Chengdu Tone 4")
+```
+T2 has very limited changes under focus. In addition, the downward tone shows clear downstep trend. - But we need to check if this is due to individual variation. If not, then this tone shows some interesting properties.
+
+The other tones show changes. For T3 and T4, the pre-focus shows a clear 'straighting' tendency, that is, the contour being erased, and connecting the beginning and the end of the tonal contour.For T1, it's a straighting but not connecting the beginning and the end.
+
+T1 and T3 show clear post-focus compression, but T4 less clear.
+
